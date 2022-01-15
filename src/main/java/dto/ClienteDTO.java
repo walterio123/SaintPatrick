@@ -12,9 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class ClienteDTO {
     private String id;
     private String nombre;
     private String pin;
+    @ToString.Exclude
     private List<Tarjeta> tarjetas = new ArrayList<>();
 }

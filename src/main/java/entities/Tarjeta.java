@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder
 public class Tarjeta {
     @Id
@@ -28,6 +29,7 @@ public class Tarjeta {
     private Integer saldoActual;
 
     @OneToMany(mappedBy = "tarjeta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Trans> transes = new ArrayList<>();
 
     @ManyToOne(optional = false)

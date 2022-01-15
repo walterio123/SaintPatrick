@@ -4,7 +4,7 @@ import dto.TarjetaDTO;
 import entities.Tarjeta;
 import entities.Trans;
 import mappers.TarjetaMappers;
-import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -13,58 +13,73 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TarjetaMappersTest {
-    private final TarjetaMappers mapper= Mappers.getMapper(TarjetaMappers.class);
 
-    private List<Trans>ListTrans;
-    Trans trans;
-    Trans trans1;
-    Tarjeta tarjeta;
-    @Before("startup")
-    public void init() {
+    private static TarjetaMappers mapper;
 
-        trans=new Trans();
-        trans.setId("8293-3289-isdf2-238t");
-        trans.setFecha(new Date());
-        trans.setImporte(1000);
-        tarjeta=new Tarjeta();
-        tarjeta.setId("ioT3-pYp2-odfn3-i32o");
-        tarjeta.setNroTarjeta("8623134225");
-        tarjeta.setSaldoActual(10000);
-        tarjeta.setTranses(ListTrans);
 
-        trans.setTarjeta(tarjeta);
 
-        trans1=new Trans();
-        trans1.setId("8293-3289-isdf2-238t");
-        trans1.setFecha(new Date());
-        trans1.setImporte(1000);
-        Tarjeta tarjeta1=new Tarjeta();
-
-        trans.setTarjeta(tarjeta1);
-
-        ListTrans = new ArrayList<>(Arrays.asList(trans,trans1));
+    @BeforeAll
+    public static void setup() {
+        mapper= Mappers.getMapper(TarjetaMappers.class);
     }
 
 
     @Test
     public void tarjetaMapperTestSimple(){
+         List<Trans>ListTrans=new ArrayList<>();
 
-        Tarjeta tarjeta1=new Tarjeta();
-        tarjeta1.setId("ioT3-pYp2-odfn3-i32o");
-        tarjeta1.setNroTarjeta("8623134225");
-        tarjeta1.setSaldoActual(10000);
-        tarjeta1.setTranses(ListTrans);
+        Trans trans= Trans.builder()
+                            .id("8293-3289-isdf2-238t")
+                            .fecha(new Date())
+                            .importe(1000)
+                            .tarjeta(Tarjeta.builder()
+                                    .id("ioT3-pYp2-odfn3-i32o")
+                                    .nroTarjeta("8623134225")
+                                    .saldoActual(10000)
+                                    .transes(ListTrans).build())
+                .build();
+
+        Trans trans1= Trans.builder()
+                .id("8293-3289-isdf2-238t")
+                .fecha(new Date())
+                .importe(1000)
+                .tarjeta(Tarjeta.builder()
+                        .id("ioT3-pYp2-oidn3-iT2o")
+                        .nroTarjeta("8623134000")
+                        .saldoActual(50000)
+                        .transes(ListTrans).build())
+                .build();
+
+        ListTrans = new ArrayList<>(Arrays.asList(trans,trans1));
+
+        Tarjeta tarjeta= Tarjeta.builder()
+                                    .id("poe3-o455-y54k-8so3")
+                                    .nroTarjeta("983455739004")
+                                    .saldoActual(1000)
+                                    .transes(ListTrans)
+                                    .build();
+
+        Tarjeta tarjeta1= Tarjeta.builder()
+                                    .id("ioT3-pYp2-odfn3-i32o")
+                                    .nroTarjeta("983455739454")
+                                    .saldoActual(1000)
+                                    .transes(ListTrans)
+                                    .build();
+
 
         List<Tarjeta>tarjetaList=new ArrayList<>(Arrays.asList(tarjeta,tarjeta1));
         List<TarjetaDTO>tarjetaDTOList=mapper.toListTarjetaDTO(tarjetaList);
        TarjetaDTO dto1= mapper.ToTarjetaDTO(tarjeta1);
-       System.out.println(tarjetaDTOList.size());
-       System.out.println(tarjeta1.getTranses());
-        assertEquals(tarjeta1.getId(),dto1.getId());
-        assertEquals(2,tarjetaDTOList.size());
-        assertEquals(tarjetaList.get(1).getId(),tarjetaDTOList.get(1).getId());
+       assertAll(
+               ()->{
+                   assertEquals(tarjeta1.getId(),dto1.getId());
+                   assertEquals(2,tarjetaDTOList.size());
+                   assertEquals(tarjetaList.get(1).getId(),tarjetaDTOList.get(1).getId());
+               }
+       );
     }
 }
