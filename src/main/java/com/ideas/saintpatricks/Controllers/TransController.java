@@ -18,8 +18,6 @@ public class TransController {
 
     private final TransServices transServices;
 
-
-
     @PostMapping
     public ResponseEntity<TransDTO> createTrans(@RequestBody TransDTO transDTO){
 

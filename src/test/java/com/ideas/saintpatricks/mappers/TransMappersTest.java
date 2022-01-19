@@ -70,4 +70,59 @@ class TransMappersTest {
 
 
     }
+    @Test
+   void toTrans(){
+        List<Trans>transactions=new ArrayList<>();
+        Cliente clienteForTrans=new Cliente();
+
+        TransDTO transDTO= TransDTO.builder()
+                .id("8293-3289-isdf2-238t")
+                .fecha(new Date())
+                .importe(1000)
+                .tarjeta(Tarjeta.builder()
+                        .id("ioT3-pYp2-oidn3-iT2o")
+                        .nroTarjeta("8623134000")
+                        .saldoActual(50000)
+                        .transes(transactions)
+                        .cliente(clienteForTrans)
+                        .build())
+                .build();
+
+        Trans transTest=mapper.toTrans(transDTO);
+        assertAll(
+                ()->{
+                    assertEquals(transTest.getId(),transDTO.getId());
+                    assertEquals(transTest.getImporte(),transDTO.getImporte());
+
+                }
+        );
+    }
+    @Test
+    void toTransNull(){
+        TransDTO dto=null;
+        Trans trans=mapper.toTrans(dto);
+        assertEquals(null,trans);
+    }
+    @Test
+    void toListDTO(){
+        List<Trans>transactions=new ArrayList<>();
+        Cliente clienteForTrans=new Cliente();
+
+        Trans trans= Trans.builder()
+                .id("8293-3289-isdf2-238t")
+                .fecha(new Date())
+                .importe(1000)
+                .tarjeta(Tarjeta.builder()
+                        .id("ioT3-pYp2-oidn3-iT2o")
+                        .nroTarjeta("8623134000")
+                        .saldoActual(50000)
+                        .transes(transactions)
+                        .cliente(clienteForTrans)
+                        .build())
+                .build();
+    List<Trans>transList=new ArrayList<>(Arrays.asList(trans));
+    List<TransDTO>dtoList=mapper.toListTransDTO(transList);
+
+    assertEquals(dtoList.size(),transList.size());
+    }
 }
