@@ -160,9 +160,15 @@ class ClienteMappersTest {
                             clientePrueba.getTarjetas().get(0).getNroTarjeta());
                     assertEquals(2,clienteDTO.getTarjetas().size());
 
-                    System.out.println(clientePrueba);
-                    System.out.println(clienteDTO);
                 }
         );
     }
+    @Test
+    void  toClienteNull(){
+        ClienteDTO dto=null;
+        Cliente cliente=mapper.toCliente(dto);
+        assertEquals(null,cliente);
+    }
+
+
 }

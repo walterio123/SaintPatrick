@@ -57,9 +57,6 @@ class TransMappersTest {
         List<Trans>list=new ArrayList<>(Arrays.asList(trans,trans1));
 
         TransDTO dto=mapper.toTransDto(trans);
-        System.out.println(trans);
-        System.out.println(dto);
-        System.out.println(list.size());
         assertAll(
                 ()->{
                     assertEquals(trans.getId(),dto.getId());
@@ -124,5 +121,11 @@ class TransMappersTest {
     List<TransDTO>dtoList=mapper.toListTransDTO(transList);
 
     assertEquals(dtoList.size(),transList.size());
+    }
+    @Test
+    void toTransDTONull(){
+        Trans trans=null;
+        TransDTO dto=mapper.toTransDto(trans);
+        assertEquals(null,dto);
     }
 }

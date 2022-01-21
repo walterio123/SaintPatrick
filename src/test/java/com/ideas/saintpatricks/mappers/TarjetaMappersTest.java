@@ -81,4 +81,16 @@ class TarjetaMappersTest {
                 }
         );
     }
+    @Test
+    void toTarjetaNull(){
+        TarjetaDTO dto=null;
+        Tarjeta tarjeta=mapper.toTarjeta(dto);
+        assertEquals(null,tarjeta);
+    }
+    @Test
+     void ToTarjetaDTONull(){
+        Tarjeta tarjeta=null;
+        TarjetaDTO dto=mapper.ToTarjetaDTO(tarjeta);
+        assertEquals(null,dto);
+    }
 }
